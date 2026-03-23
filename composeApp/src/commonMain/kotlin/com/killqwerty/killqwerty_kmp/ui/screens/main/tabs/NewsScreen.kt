@@ -48,7 +48,6 @@ fun NewsScreen() {
 
 @Composable
 fun NewsItem(news: NewsModel) {
-    if(news.id % 2 == 1) {
         Card(
             modifier = Modifier.padding(4.dp),
             colors = CardDefaults.cardColors().copy(containerColor = Color.LightGray)
@@ -62,16 +61,6 @@ fun NewsItem(news: NewsModel) {
                 Text(news.text)
             }
         }
-    } else if (news.id % 3 == 0){
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
-            CircularProgressIndicator()
-        }
-    } else {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = news.id.toString() + " " + news.text
-        )
-    }
 }
 
 
