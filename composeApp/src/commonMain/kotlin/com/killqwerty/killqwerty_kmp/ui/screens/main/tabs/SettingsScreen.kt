@@ -14,12 +14,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.killqwerty.killqwerty_kmp.domain.interactor.settings.IncrementSettingsCounterInteractor
+import com.killqwerty.killqwerty_kmp.domain.interactor.settings.ObserveSettingsCounterInteractor
 import com.killqwerty.killqwerty_kmp.ui.viewmodel.SettingsEvent
 import com.killqwerty.killqwerty_kmp.ui.viewmodel.SettingsViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun SettingsScreen() {
-    val viewModel = viewModel { SettingsViewModel() }
+    val observeSettingsCounterInteractor = koinInject<ObserveSettingsCounterInteractor>()
+    val incrementSettingsCounterInteractor = koinInject<IncrementSettingsCounterInteractor>()
+    val viewModel = viewModel {
+        SettingsViewModel(
+            observeSettingsCounterInteractor = observeSettingsCounterInteractor,
+            incrementSettingsCounterInteractor = incrementSettingsCounterInteractor
+        )
+    }
     val state by viewModel.state.collectAsState()
 
     Column(

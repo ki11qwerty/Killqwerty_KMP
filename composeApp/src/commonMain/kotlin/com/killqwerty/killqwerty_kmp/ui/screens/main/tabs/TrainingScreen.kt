@@ -14,12 +14,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.killqwerty.killqwerty_kmp.domain.interactor.training.IncrementTrainingCounterInteractor
+import com.killqwerty.killqwerty_kmp.domain.interactor.training.ObserveTrainingCounterInteractor
 import com.killqwerty.killqwerty_kmp.ui.viewmodel.TrainingEvent
 import com.killqwerty.killqwerty_kmp.ui.viewmodel.TrainingViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun TrainingScreen() {
-    val viewModel = viewModel { TrainingViewModel() }
+    val observeTrainingCounterInteractor = koinInject<ObserveTrainingCounterInteractor>()
+    val incrementTrainingCounterInteractor = koinInject<IncrementTrainingCounterInteractor>()
+    val viewModel = viewModel {
+        TrainingViewModel(
+            observeTrainingCounterInteractor = observeTrainingCounterInteractor,
+            incrementTrainingCounterInteractor = incrementTrainingCounterInteractor
+        )
+    }
     val state by viewModel.state.collectAsState()
 
     Column(
