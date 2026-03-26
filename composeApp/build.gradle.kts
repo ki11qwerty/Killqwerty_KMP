@@ -60,6 +60,7 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.kamel.image.default)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.contentNegotiation)
             implementation(libs.ktor.client.logging)

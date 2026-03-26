@@ -10,6 +10,7 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,6 +54,8 @@ import com.killqwerty.killqwerty_kmp.domain.data.mock.toModel
 import com.killqwerty.killqwerty_kmp.domain.interactor.news.NewsInteractor
 import com.killqwerty.killqwerty_kmp.ui.viewmodel.NewsEvent
 import com.killqwerty.killqwerty_kmp.ui.viewmodel.NewsViewModel
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -122,11 +126,26 @@ fun NewsItem(news: NewsModel) {
                         tween(300)
                     )
                 ) {
-                    Text(
-                        text = news.description,
-                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                        textAlign = TextAlign.Center
-                    )
+                    Column {
+                        news.urlToImage?.takeIf { it.isNotBlank() }?.let { imageUrl ->
+                            KamelImage(
+                                resource = { asyncPainterResource(data = imageUrl) },
+                                contentDescription = news.title,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(180.dp)
+                                    .padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
+                                contentScale = ContentScale.Crop,
+                                onLoading = { CircularProgressIndicator(modifier = Modifier.align(Alignment.Center)) },
+                                onFailure = { Text("Image error: ${it.message ?: "unknown"}") }
+                            )
+                        }
+                        Text(
+                            text = news.description,
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
