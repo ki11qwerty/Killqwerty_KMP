@@ -45,7 +45,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.killqwerty.killqwerty_kmp.data.news.NewsModel
+import com.killqwerty.killqwerty_kmp.domain.data.NewsModel
+import com.killqwerty.killqwerty_kmp.domain.data.mock.Mock
+import com.killqwerty.killqwerty_kmp.domain.data.mock.toModel
 import com.killqwerty.killqwerty_kmp.domain.interactor.news.NewsInteractor
 import com.killqwerty.killqwerty_kmp.ui.viewmodel.NewsEvent
 import com.killqwerty.killqwerty_kmp.ui.viewmodel.NewsViewModel
@@ -88,7 +90,7 @@ fun NewsList(list : List<NewsModel>){
     )
 
     LazyColumn(modifier = Modifier.alpha(alpha)) {
-        items(list, key = {it.id} ){ new ->
+        items(list){ new -> //добавить кей
             NewsItem(new)
         }
     }
@@ -107,9 +109,9 @@ fun NewsItem(news: NewsModel) {
                     modifier = Modifier.padding(16.dp).fillMaxWidth(),
                     horizontalArrangement = Arrangement.Start
                 ) {
-                    Text(news.id.toString())
+                    Text(news.title)
                     Spacer(modifier = Modifier.width(16.dp))
-                    Text(news.text)
+                    Text(news.title)
                 }
                 AnimatedVisibility(
                     visible = isShowDesc,
@@ -137,5 +139,5 @@ fun NewsItem(news: NewsModel) {
 @Preview
 @Composable
 fun NewsScreenPrev(){
-    NewsItem(NewsModel(1,"тайтл","текст"))
+    NewsItem(Mock().toModel())
 }

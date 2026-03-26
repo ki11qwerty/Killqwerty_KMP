@@ -1,6 +1,7 @@
 package com.killqwerty.killqwerty_kmp.data.repository
 
-import com.killqwerty.killqwerty_kmp.data.news.NewsModel
+import com.killqwerty.killqwerty_kmp.data.mapper.toDomain
+import com.killqwerty.killqwerty_kmp.domain.data.NewsModel
 import com.killqwerty.killqwerty_kmp.data.remote.news.NewsApiService
 import com.killqwerty.killqwerty_kmp.domain.repository.NewsRepository
 import com.killqwerty.killqwerty_kmp.domain.repository.SettingsRepository
@@ -14,13 +15,19 @@ class NewsRepositoryImpl(
     private val newsApiService: NewsApiService
 ) : NewsRepository {
     override suspend fun getTopHeadlines(page: Int, pageSize: Int): List<NewsModel> {
-        val baseId = (page - 1) * pageSize
-        return newsApiService.getTopHeadlines(page = page, pageSize = pageSize).mapIndexed { index, item ->
-            NewsModel(
-                id = baseId + index + 1,
-                text = item.title?.takeIf { it.isNotBlank() } ?: "Untitled",
-                description = item.description ?: item.content ?: "No description"
-            )
+        return newsApiService.getTopHeadlines(page = page, pageSize = pageSize).map { dto ->
+           dto.toDomain()
+        }
+    }
+
+    override suspend fun getEverything(
+        page: Int,
+        pageSize: Int,
+        language: String?,
+        query: String?
+    ): List<NewsModel> {
+        return newsApiService.getEverything(page = page, pageSize = pageSize).map { dto ->
+            dto.toDomain()
         }
     }
 }

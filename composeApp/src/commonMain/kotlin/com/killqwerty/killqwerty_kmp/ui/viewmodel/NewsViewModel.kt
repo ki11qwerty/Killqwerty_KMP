@@ -2,7 +2,7 @@ package com.killqwerty.killqwerty_kmp.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.killqwerty.killqwerty_kmp.data.news.NewsModel
+import com.killqwerty.killqwerty_kmp.domain.data.NewsModel
 import com.killqwerty.killqwerty_kmp.domain.interactor.news.NewsInteractor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -44,7 +44,7 @@ class NewsViewModel(
             val nextPage = if (reset) 1 else _state.value.page
             _state.update { it.copy(isLoading = true, error = null) }
 
-            runCatching { newsInteractor(page = nextPage, pageSize = PAGE_SIZE) }
+            runCatching { newsInteractor.getEverything(page = nextPage, pageSize = PAGE_SIZE) }
                 .onSuccess { pageItems ->
                     _state.update { current ->
                         val merged = if (reset) pageItems else current.news + pageItems
