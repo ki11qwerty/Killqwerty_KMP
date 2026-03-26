@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -89,7 +90,8 @@ fun NewsList(list : List<NewsModel>){
         label = "listAlpha"
     )
 
-    LazyColumn(modifier = Modifier.alpha(alpha)) {
+    LazyColumn(modifier = Modifier.alpha(alpha),
+        verticalArrangement = Arrangement.spacedBy(8.dp)) {
         items(list){ new -> //добавить кей
             NewsItem(new)
         }
@@ -104,15 +106,11 @@ fun NewsItem(news: NewsModel) {
             colors = CardDefaults.cardColors().copy(containerColor = Color.LightGray),
             onClick = {isShowDesc = !isShowDesc}
         ) {
-            Column {
-                Row(
-                    modifier = Modifier.padding(16.dp).fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Text(news.title)
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Text(news.title)
-                }
+            Column(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        modifier = Modifier.defaultMinSize(minHeight = 50.dp).padding(vertical = 12.dp).fillMaxWidth(),
+                        text = news.title,
+                        textAlign = TextAlign.Center)
                 AnimatedVisibility(
                     visible = isShowDesc,
                     enter = expandVertically(tween(200))
