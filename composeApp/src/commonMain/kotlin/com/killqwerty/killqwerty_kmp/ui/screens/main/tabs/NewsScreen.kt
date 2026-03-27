@@ -71,7 +71,7 @@ fun NewsScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             state.error?.let { Text(text = it, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(8.dp)) }
-            NewsList(state.news)
+            NewsList(state.news, modifier = Modifier.weight(1f))
             Button(
                 onClick = { viewModel.onEvent(NewsEvent.LoadNextPage) },
                 enabled = !state.isLoading && state.hasMore,
@@ -87,14 +87,14 @@ fun NewsScreen() {
 }
 
 @Composable
-fun NewsList(list : List<NewsModel>){
+fun NewsList(list : List<NewsModel>, modifier: Modifier){
     val alpha by animateFloatAsState(
         targetValue = if (list.isNotEmpty()) 1f else 0f,
         animationSpec = tween(durationMillis = 1000),
         label = "listAlpha"
     )
 
-    LazyColumn(modifier = Modifier.alpha(alpha),
+    LazyColumn(modifier = modifier.alpha(alpha),
         verticalArrangement = Arrangement.spacedBy(8.dp)) {
         items(list){ new -> //добавить кей
             NewsItem(new)
