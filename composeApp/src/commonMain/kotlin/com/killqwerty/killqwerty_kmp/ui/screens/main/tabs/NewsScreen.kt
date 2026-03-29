@@ -63,7 +63,6 @@ fun NewsScreen() {
     val newsInteractor = koinInject<NewsInteractor>()
     val viewModel = viewModel { NewsViewModel(newsInteractor) }
     val state by viewModel.state.collectAsState()
-
     LaunchedEffect(Unit) {
         viewModel.onEvent(NewsEvent.OnStart)
     }
