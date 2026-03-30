@@ -66,7 +66,6 @@ fun NewsScreen() {
     LaunchedEffect(Unit) {
         viewModel.onEvent(NewsEvent.OnStart)
     }
-
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             state.error?.let { Text(text = it, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(8.dp)) }
